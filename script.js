@@ -92,8 +92,11 @@ let estado = JSON.parse(localStorage.getItem("estadoMalla")) || {};
 function desbloqueado(r){return r.req.every(id=>estado[id]);}
 
 function toggle(id){
-  estado[id]=!estado[id];
-  localStorage.setItem("estadoMalla",JSON.stringify(estado));
+  if(!estado[id]) estado[id] = "cursando";
+  else if(estado[id] === "cursando") estado[id] = "aprobado";
+  else estado[id] = null;
+
+  localStorage.setItem("estadoMalla", JSON.stringify(estado));
   render();
 }
 
@@ -115,8 +118,17 @@ function render(){
       total+=r.creditos;
       const div=document.createElement("div");
       div.className="ramo";
-      if(estado[r.id]){div.classList.add("aprobado");sum+=r.creditos;aprob+=r.creditos;}
-      else if(!desbloqueado(r))div.classList.add("bloqueado");
+      if(estado[r.id] === "aprobado"){
+  div.classList.add("aprobado");
+  sum += r.creditos;
+  aprob += r.creditos;
+}
+else if(estado[r.id] === "cursando"){
+  div.classList.add("cursando");
+}
+else if(!desbloqueado(r)){
+  div.classList.add("bloqueado");
+}
       div.onclick=()=>desbloqueado(r)&&toggle(r.id);
       div.innerHTML=`<div class="nombre">${r.nombre}</div><div class="detalle">${r.creditos} créditos</div>`;
       grid.appendChild(div);
