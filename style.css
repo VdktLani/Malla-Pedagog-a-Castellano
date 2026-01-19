@@ -80,6 +80,11 @@ h1 {
   border-color: #4caf50;
 }
 
+.ramo.cursando {
+  background: linear-gradient(135deg, #ffd1e8, #ffb3d9);
+  border-color: #ff5fa2;
+}
+
 .ramo.bloqueado {
   opacity: 0.4;
   cursor: not-allowed;
